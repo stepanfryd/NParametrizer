@@ -6,12 +6,20 @@ using System.Linq;
 
 namespace NParametrizer
 {
+    /// <summary>
+    /// Base abstract clase for parameter store
+    /// </summary>
     public abstract class ParametersBase
     {
         private readonly string[] _arguments;
         private readonly IDictionary<string, ParameterAttribute> _parameters;
         private string _valueArgumentPrefix;
 
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        /// <param name="args">Configuration arguments, mostly from comand line argument array</param>
+        /// <param name="argPrefix">Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=</param>
         protected ParametersBase(string[] args, string argPrefix = "--")
         {
             _valueArgumentPrefix = argPrefix ?? "" ;
@@ -26,10 +34,12 @@ namespace NParametrizer
             ValidateArguments();
         }
 
+        /// <summary>
+        /// Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
+        /// </summary>
         protected string ValueArgumentPrefix
         {
             get { return _valueArgumentPrefix; }
-            set { _valueArgumentPrefix = value; }
         }
 
         private void SetDefaults()
@@ -87,6 +97,9 @@ namespace NParametrizer
             }
         }
 
+        /// <summary>
+        /// Custom parameter validation
+        /// </summary>
         protected abstract void ValidateArguments();
 
         private void ProcessParameters()
