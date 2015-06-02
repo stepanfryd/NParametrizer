@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="NParametrizerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestEnum.cs" />
     <Compile Include="TestParametersClass.cs" />
     <Compile Include="UriInfo.cs" />
   </ItemGroup>

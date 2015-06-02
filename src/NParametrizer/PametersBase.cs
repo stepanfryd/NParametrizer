@@ -146,8 +146,17 @@ namespace NParametrizer
 						try
 						{
 							var strVal = argument.Substring(par.Key.Length);
+							var pType = par.Value.BelongsTo.PropertyType;
+
+							if (pType.IsEnum || (pType.IsGenericType && pType.GetGenericArguments().Length>0 && pType.GetGenericArguments()[0].IsEnum))
+							{
+								par.Value.BelongsTo.SetValue(this, Enum.Parse(pType.GetGenericArguments()[0], strVal, true), null);
+							}
+							else { 
+
 							par.Value.BelongsTo.SetValue(this,
-								Convert.ChangeType(strVal, par.Value.BelongsTo.PropertyType), null);
+								Convert.ChangeType(strVal, pType), null);
+							}
 						}
 						catch
 						{
