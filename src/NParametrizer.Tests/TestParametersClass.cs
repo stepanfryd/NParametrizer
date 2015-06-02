@@ -127,8 +127,11 @@ namespace NParametrizer.Tests
 		[Config("MongoServer", ConfigType.ConnectionString)]
 		public string MongoServerString { get; set; }
 
+		[Parameter("--ENMN", Description = "Test enum value")]
+		public TestEnum? EnumNullableValue { get; set; }
+
 		[Parameter("--ENM", Description = "Test enum value")]
-		public TestEnum? EnumValue { get; set; }
+		public TestEnum EnumValue { get; set; }
 
 		protected override void ValidateArguments()
 		{

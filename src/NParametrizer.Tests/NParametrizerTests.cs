@@ -41,7 +41,10 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par1.EnumValue.Equals(TestEnum.Value3));
 
 			var par2 = new TestParametersClass(new[] { "--AA=something"});
-			Assert.IsTrue(par2.EnumValue.Equals(null));
+			Assert.IsTrue(par2.EnumNullableValue.Equals(null));
+
+			var par3 = new TestParametersClass(new[] { "--ENMN=Value3" });
+			Assert.IsTrue(par3.EnumNullableValue.Equals(TestEnum.Value3));
 		}
 
 		[Test]
