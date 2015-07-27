@@ -7,7 +7,9 @@ namespace NParametrizer.Tests
 	{
 		private string _ftpUriString;
 
-    public TestParametersClass() : this(null) { }
+		public TestParametersClass() : this(null)
+		{
+		}
 
 		public TestParametersClass(string[] args) : base(args)
 		{
@@ -96,9 +98,9 @@ namespace NParametrizer.Tests
 		/// </summary>
 		[Parameter("--d", "--DownloadPath",
 			Description = "File name for sweep data process. If not specified default value is"
-			              + "[Files\\Samples] in folder where tool is currently running. "
-			              +
-			              "Value can be defined in appSettings[DownloadPath] or -DownloadPath|-d={Directory Name} command-line parameter"
+										+ "[Files\\Samples] in folder where tool is currently running. "
+										+
+										"Value can be defined in appSettings[DownloadPath] or -DownloadPath|-d={Directory Name} command-line parameter"
 			)]
 		[DefaultValue("Files\\Samples")]
 		[Config("DownloadPath", ConfigType.AppSettings)]
@@ -134,6 +136,28 @@ namespace NParametrizer.Tests
 
 		[Parameter("--ENM", Description = "Test enum value")]
 		public TestEnum EnumValue { get; set; }
+
+		public CustomConfigSection CustomConfig
+		{
+			get
+			{
+				return GetSection<CustomConfigSection>("testSection");
+			}
+		}
+
+		public CustomConfigSection CustomConfigGroup
+		{
+			get
+			{
+				return GetSection<CustomConfigSection>("testGroup/testSection");
+			}
+		}
+
+		[Config("testSection")]
+		public CustomConfigSection CustomConfig1 { get; set; }
+
+		[Config("testGroup/testSection")]
+		public CustomConfigSection CustomConfigGroup1 { get; set; }
 
 		protected override void ValidateArguments()
 		{

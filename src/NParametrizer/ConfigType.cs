@@ -13,6 +13,11 @@
         /// <summary>
         /// Connection strings collection key
         /// </summary>
-        ConnectionString
+        ConnectionString,
+
+        /// <summary>
+        /// Configuration is defined in custom configuration section
+        /// </summary>
+        CustomSection
     }
 }

@@ -31,22 +31,33 @@ namespace NParametrizer.Tests
 			}
 		}
 
-    [Test]
-    public void ParameterLessConstructorTest()
-    {
-      var par = new TestParametersClass();
-    }
+		[Test]
+		public void ParameterLessConstructorTest()
+		{
+			var par = new TestParametersClass();
+		}
+
+		[Test]
+		public void CustomSectionTest()
+		{
+			var config = new TestParametersClass();
+
+			Assert.IsTrue(config.CustomConfig.ConfigElement == "ConfigElementValue");
+			Assert.IsTrue(config.CustomConfig.Number == 100);
+			Assert.IsTrue(config.CustomConfigGroup.ConfigElement == "ConfigGroupElementValue");
+			Assert.IsTrue(config.CustomConfigGroup.Number == 200);
+		}
 
 		[Test]
 		public void EnumTest()
 		{
-			var par = new TestParametersClass(new []{"--ENM=Value1"});
+			var par = new TestParametersClass(new[] { "--ENM=Value1" });
 			Assert.IsTrue(par.EnumValue.Equals(TestEnum.Value1));
 
 			var par1 = new TestParametersClass(new[] { "--ENM=Value3" });
 			Assert.IsTrue(par1.EnumValue.Equals(TestEnum.Value3));
 
-			var par2 = new TestParametersClass(new[] { "--AA=something"});
+			var par2 = new TestParametersClass(new[] { "--AA=something" });
 			Assert.IsTrue(par2.EnumNullableValue.Equals(null));
 
 			var par3 = new TestParametersClass(new[] { "--ENMN=Value3" });
@@ -56,7 +67,7 @@ namespace NParametrizer.Tests
 		[Test]
 		public void AllFilesTest()
 		{
-			var par = new TestParametersClass(new[] {"all", "download"});
+			var par = new TestParametersClass(new[] { "all", "download" });
 
 			Assert.IsTrue(par.Import1);
 			Assert.IsTrue(par.Import2);
@@ -67,7 +78,7 @@ namespace NParametrizer.Tests
 		[Test]
 		public void AllTest()
 		{
-			var par = new TestParametersClass(new[] {"all"});
+			var par = new TestParametersClass(new[] { "all" });
 
 			Assert.IsTrue(par.Import1);
 			Assert.IsTrue(par.Import2);
@@ -78,7 +89,7 @@ namespace NParametrizer.Tests
 		[Test]
 		public void AppSettingsTest()
 		{
-			var par = new TestParametersClass(new string[] {});
+			var par = new TestParametersClass(new string[] { });
 
 			Assert.IsTrue(!par.Import1);
 			Assert.IsTrue(!par.Import2);
@@ -101,7 +112,7 @@ namespace NParametrizer.Tests
 			var newSql = "NEW_SQL_CONNECTION_STRING";
 			var newMongo = "NEW_SSIS_CONNECTION_STRING";
 
-			var par = new TestParametersClass(new[] {string.Format("--S={0}", newSql), string.Format("--M={0}", newMongo)});
+			var par = new TestParametersClass(new[] { string.Format("--S={0}", newSql), string.Format("--M={0}", newMongo) });
 
 			Assert.IsTrue(par.SqlServerConnectionString == newSql);
 			Assert.IsTrue(par.MongoServerString == newMongo);
@@ -123,7 +134,7 @@ namespace NParametrizer.Tests
 		[Test]
 		public void DisableDownloadTest()
 		{
-			var par = new TestParametersClass(new[] {"download"});
+			var par = new TestParametersClass(new[] { "download" });
 
 			Assert.IsTrue(par.PerformFtpDownload);
 
@@ -242,7 +253,7 @@ namespace NParametrizer.Tests
 		public void ChangeFtpUriTest()
 		{
 			var par =
-				new TestParametersClass(new[] {"--F=ftp://new-user:new-password@new.testserver.test:23/Totally/New/Path"});
+				new TestParametersClass(new[] { "--F=ftp://new-user:new-password@new.testserver.test:23/Totally/New/Path" });
 
 			Assert.IsTrue(par.FtpUri.ToString() == "ftp://new-user:new-password@new.testserver.test:23/Totally/New/Path");
 			Assert.IsTrue(par.FtpUri.Host == "new.testserver.test");
@@ -265,7 +276,7 @@ namespace NParametrizer.Tests
 		[Test]
 		public void RadioShackTest()
 		{
-			var par = new TestParametersClass(new[] {"import2"});
+			var par = new TestParametersClass(new[] { "import2" });
 
 			Assert.IsTrue(!par.Import1);
 			Assert.IsTrue(par.Import2);
@@ -276,7 +287,7 @@ namespace NParametrizer.Tests
 		[Test]
 		public void SSISTest()
 		{
-			var par = new TestParametersClass(new[] {"import1"});
+			var par = new TestParametersClass(new[] { "import1" });
 
 			Assert.IsTrue(par.Import1);
 			Assert.IsTrue(!par.Import2);
@@ -287,7 +298,7 @@ namespace NParametrizer.Tests
 		[Test]
 		public void SweepTest()
 		{
-			var par = new TestParametersClass(new[] {"import3"});
+			var par = new TestParametersClass(new[] { "import3" });
 
 			Assert.IsTrue(!par.Import1);
 			Assert.IsTrue(!par.Import2);

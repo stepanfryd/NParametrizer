@@ -14,49 +14,81 @@ namespace NParametrizer
 		private readonly List<string> _arguments = new List<string>();
 		private readonly IDictionary<string, ParameterAttribute> _parameters;
 
-    /// <summary>
-    /// Base class constructor
-    /// </summary>
-    protected ParametersBase(): this(null, null)
-    {
+		/// <summary>
+		/// Base class constructor
+		/// </summary>
+		protected ParametersBase() : this(null, null)
+		{
+		}
 
-    }
-
-    /// <summary>
-    ///   Class constructor
-    /// </summary>
-    /// <param name="args">Configuration arguments, mostly from comand line argument array</param>
-    /// <param name="argPrefix">
-    ///   Defined argument prefix. Default value is -- which means, that value parameters looks like
-    ///   --PARAMETER=
-    /// </param>
-    protected ParametersBase(string[] args, string argPrefix = "--")
+		/// <summary>
+		///   Class constructor
+		/// </summary>
+		/// <param name="args">Configuration arguments, mostly from comand line argument array</param>
+		/// <param name="argPrefix">
+		///   Defined argument prefix. Default value is -- which means, that value parameters looks like
+		///   --PARAMETER=
+		/// </param>
+		protected ParametersBase(string[] args, string argPrefix = "--")
 		{
 			ValueArgumentPrefix = argPrefix ?? "";
-      if (args != null) {
-        _arguments.AddRange(args);
-      }
-      _parameters = new Dictionary<string, ParameterAttribute>();
+			if (args != null)
+			{
+				_arguments.AddRange(args);
+			}
+			_parameters = new Dictionary<string, ParameterAttribute>();
 
-      SetDefaults();
-      ProcessParameters();
-      ProcessArguments();
-      ValidateArguments();
-    }
+			SetDefaults();
+			ProcessParameters();
+			ProcessArguments();
+			ValidateArguments();
+		}
 
 		/// <summary>
 		///   Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
 		/// </summary>
 		protected string ValueArgumentPrefix { get; private set; }
 
+		/// <summary>
+		/// Get configuration section by name with specified type
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="sectionName"></param>
+		/// <returns></returns>
+		protected object GetSection(string sectionName)
+		{
+			return ConfigurationManager.GetSection(sectionName);
+		}
+
+		/// <summary>
+		/// Get configuration section by name with specified type
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="sectionName"></param>
+		/// <returns></returns>
+		protected T GetSection<T>(string sectionName)
+		{
+			return (T)ConfigurationManager.GetSection(sectionName);
+		}
+		
+		/// <summary>
+		/// Get section by generic type
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		protected T GetSection<T>()
+		{
+			return (T)ConfigurationManager.GetSection(typeof(T).Name);
+		}
+
 		private void SetDefaults()
 		{
 			// set defaults from attributes
 			foreach (var prop in GetType()
 				.GetProperties()
-				.Where(p => Attribute.IsDefined(p, typeof (DefaultValueAttribute))))
+				.Where(p => Attribute.IsDefined(p, typeof(DefaultValueAttribute))))
 			{
-				var parAttr = prop.GetCustomAttributes(typeof (DefaultValueAttribute), true) as DefaultValueAttribute[];
+				var parAttr = prop.GetCustomAttributes(typeof(DefaultValueAttribute), true) as DefaultValueAttribute[];
 				if (parAttr != null && parAttr.Length > 0)
 				{
 					if (parAttr[0].Value != null)
@@ -69,16 +101,16 @@ namespace NParametrizer
 			// overwrite by app.config
 			foreach (var prop in GetType()
 				.GetProperties()
-				.Where(p => Attribute.IsDefined(p, typeof (ConfigAttribute))))
+				.Where(p => Attribute.IsDefined(p, typeof(ConfigAttribute))))
 			{
-				var parAttrs = prop.GetCustomAttributes(typeof (ConfigAttribute), true) as ConfigAttribute[];
+				var parAttrs = prop.GetCustomAttributes(typeof(ConfigAttribute), true) as ConfigAttribute[];
 				if (parAttrs != null && parAttrs.Length > 0)
 				{
 					var parAttr = parAttrs[0];
 					if (!string.IsNullOrEmpty(parAttr.KeyName))
 					{
 						if (parAttr.Type == ConfigType.AppSettings &&
-						    ConfigurationManager.AppSettings[parAttr.KeyName] != null)
+								ConfigurationManager.AppSettings[parAttr.KeyName] != null)
 						{
 							var strVal = ConfigurationManager.AppSettings[parAttr.KeyName];
 
@@ -94,10 +126,14 @@ namespace NParametrizer
 							}
 						}
 						else if (parAttr.Type == ConfigType.ConnectionString &&
-						         ConfigurationManager.ConnectionStrings[parAttr.KeyName] != null)
+										 ConfigurationManager.ConnectionStrings[parAttr.KeyName] != null)
 						{
 							prop.SetValue(this, ConfigurationManager.ConnectionStrings[parAttr.KeyName].ConnectionString,
 								null);
+						}
+						else if (parAttr.Type == ConfigType.CustomSection)
+						{
+							prop.SetValue(this, GetSection(parAttr.KeyName), null);
 						}
 					}
 				}
@@ -113,9 +149,9 @@ namespace NParametrizer
 		{
 			foreach (var prop in GetType()
 				.GetProperties()
-				.Where(p => Attribute.IsDefined(p, typeof (ParameterAttribute))))
+				.Where(p => Attribute.IsDefined(p, typeof(ParameterAttribute))))
 			{
-				var attrs = prop.GetCustomAttributes(typeof (ParameterAttribute), true) as ParameterAttribute[];
+				var attrs = prop.GetCustomAttributes(typeof(ParameterAttribute), true) as ParameterAttribute[];
 				if (attrs != null && attrs.Length > 0)
 				{
 					var parAttr = attrs.First();
@@ -164,10 +200,10 @@ namespace NParametrizer
 							{
 								par.Value.BelongsTo.SetValue(this, Enum.Parse(pType.GetGenericArguments()[0], strVal, true), null);
 							}
-							else { 
-
-							par.Value.BelongsTo.SetValue(this,
-								Convert.ChangeType(strVal, pType), null);
+							else
+							{
+								par.Value.BelongsTo.SetValue(this,
+									Convert.ChangeType(strVal, pType), null);
 							}
 						}
 						catch
@@ -186,7 +222,7 @@ namespace NParametrizer
 						{
 							// expecting, that non-dash value are boolean and if is set, than set to true.
 							_parameters[argument].BelongsTo.SetValue(this,
-								!((bool) _parameters[argument].BelongsTo.GetValue(this, null)), null);
+								!((bool)_parameters[argument].BelongsTo.GetValue(this, null)), null);
 						}
 						catch
 						{
