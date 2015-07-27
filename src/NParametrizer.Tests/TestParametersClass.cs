@@ -7,6 +7,8 @@ namespace NParametrizer.Tests
 	{
 		private string _ftpUriString;
 
+    public TestParametersClass() : this(null) { }
+
 		public TestParametersClass(string[] args) : base(args)
 		{
 		}

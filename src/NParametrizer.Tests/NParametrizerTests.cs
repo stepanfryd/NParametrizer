@@ -31,6 +31,12 @@ namespace NParametrizer.Tests
 			}
 		}
 
+    [Test]
+    public void ParameterLessConstructorTest()
+    {
+      var par = new TestParametersClass();
+    }
+
 		[Test]
 		public void EnumTest()
 		{

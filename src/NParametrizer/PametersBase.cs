@@ -11,30 +11,38 @@ namespace NParametrizer
 	/// </summary>
 	public abstract class ParametersBase
 	{
-		private readonly string[] _arguments;
+		private readonly List<string> _arguments = new List<string>();
 		private readonly IDictionary<string, ParameterAttribute> _parameters;
 
-		/// <summary>
-		///   Class constructor
-		/// </summary>
-		/// <param name="args">Configuration arguments, mostly from comand line argument array</param>
-		/// <param name="argPrefix">
-		///   Defined argument prefix. Default value is -- which means, that value parameters looks like
-		///   --PARAMETER=
-		/// </param>
-		protected ParametersBase(string[] args, string argPrefix = "--")
+    /// <summary>
+    /// Base class constructor
+    /// </summary>
+    protected ParametersBase(): this(null, null)
+    {
+
+    }
+
+    /// <summary>
+    ///   Class constructor
+    /// </summary>
+    /// <param name="args">Configuration arguments, mostly from comand line argument array</param>
+    /// <param name="argPrefix">
+    ///   Defined argument prefix. Default value is -- which means, that value parameters looks like
+    ///   --PARAMETER=
+    /// </param>
+    protected ParametersBase(string[] args, string argPrefix = "--")
 		{
 			ValueArgumentPrefix = argPrefix ?? "";
+      if (args != null) {
+        _arguments.AddRange(args);
+      }
+      _parameters = new Dictionary<string, ParameterAttribute>();
 
-
-			_parameters = new Dictionary<string, ParameterAttribute>();
-			_arguments = args;
-
-			SetDefaults();
-			ProcessParameters();
-			ProcessArguments();
-			ValidateArguments();
-		}
+      SetDefaults();
+      ProcessParameters();
+      ProcessArguments();
+      ValidateArguments();
+    }
 
 		/// <summary>
 		///   Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=

@@ -46,6 +46,11 @@
               Base abstract clase for parameter store
             </summary>
         </member>
+        <member name="M:NParametrizer.ParametersBase.#ctor">
+            <summary>
+            Base class constructor
+            </summary>
+        </member>
         <member name="M:NParametrizer.ParametersBase.#ctor(System.String[],System.String)">
             <summary>
               Class constructor
@@ -56,14 +61,14 @@
               --PARAMETER=
             </param>
         </member>
-        <member name="M:NParametrizer.ParametersBase.ValidateArguments">
-            <summary>
-              Custom parameter validation
-            </summary>
-        </member>
         <member name="P:NParametrizer.ParametersBase.ValueArgumentPrefix">
             <summary>
               Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
+            </summary>
+        </member>
+        <member name="M:NParametrizer.ParametersBase.ValidateArguments">
+            <summary>
+              Custom parameter validation
             </summary>
         </member>
         <member name="T:NParametrizer.ParameterAttribute">
