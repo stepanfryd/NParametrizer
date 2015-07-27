@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NParametrizer</name>
+    </assembly>
+    <members>
+        <member name="T:NParametrizer.ConfigAttribute">
+            <summary>
+                Configuration paremeter
+            </summary>
+        </member>
+        <member name="M:NParametrizer.ConfigAttribute.#ctor(System.String,NParametrizer.ConfigType)">
+            <summary>
+                Default instance of configuration parameter
+            </summary>
+            <param name="key">Key name in configuration dictioary</param>
+            <param name="type">Configuration type</param>
+        </member>
+        <member name="P:NParametrizer.ConfigAttribute.Type">
+            <summary>
+                Configuration type
+            </summary>
+        </member>
+        <member name="P:NParametrizer.ConfigAttribute.KeyName">
+            <summary>
+                Key name in configuration dictioary
+            </summary>
+        </member>
+        <member name="T:NParametrizer.ConfigType">
+            <summary>
+            Configuration parameter location
+            </summary>
+        </member>
+        <member name="F:NParametrizer.ConfigType.AppSettings">
+            <summary>
+            AppSettings collection key
+            </summary>
+        </member>
+        <member name="F:NParametrizer.ConfigType.ConnectionString">
+            <summary>
+            Connection strings collection key
+            </summary>
+        </member>
+        <member name="T:NParametrizer.ParametersBase">
+            <summary>
+              Base abstract clase for parameter store
+            </summary>
+        </member>
+        <member name="M:NParametrizer.ParametersBase.#ctor(System.String[],System.String)">
+            <summary>
+              Class constructor
+            </summary>
+            <param name="args">Configuration arguments, mostly from comand line argument array</param>
+            <param name="argPrefix">
+              Defined argument prefix. Default value is -- which means, that value parameters looks like
+              --PARAMETER=
+            </param>
+        </member>
+        <member name="M:NParametrizer.ParametersBase.ValidateArguments">
+            <summary>
+              Custom parameter validation
+            </summary>
+        </member>
+        <member name="P:NParametrizer.ParametersBase.ValueArgumentPrefix">
+            <summary>
+              Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
+            </summary>
+        </member>
+        <member name="T:NParametrizer.ParameterAttribute">
+            <summary>
+                Class for paramter definition
+            </summary>
+        </member>
+        <member name="M:NParametrizer.ParameterAttribute.#ctor(System.String[])">
+            <summary>
+                Default Parameter constructor
+            </summary>
+            <param name="pars">Array of all possible arguments belongs to property</param>
+        </member>
+        <member name="P:NParametrizer.ParameterAttribute.ParameterVariants">
+            <summary>
+                Array of all possible arguments belongs to property
+            </summary>
+        </member>
+        <member name="P:NParametrizer.ParameterAttribute.Description">
+            <summary>
+                Parameter description. Can be used for usage generation eg. in case if no command argument is specified but program
+                needs some or required or in help/? command. :)
+            </summary>
+        </member>
+        <member name="P:NParametrizer.ParameterAttribute.BelongsTo">
+            <summary>
+                Property to parameter belongs
+            </summary>
+        </member>
+    </members>
+</doc>
