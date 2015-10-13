@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Cloud17.NParametrizer</id>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <title>NParametrizer</title>
     <authors>stepan.fryd@gmail.com</authors>
     <owners></owners>
@@ -15,7 +15,7 @@
         Simple parametrizing library to map arguments, appSettings and connectionStrings into class properties
     </summary>
     <language>en-US</language>
-    <projectUrl>https://github.com/stepanfryd/NParametrizer</projectUrl>
+    <projectUrl>http://stepanfryd.github.io/NParametrizer/</projectUrl>
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>

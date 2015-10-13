@@ -1,4 +1,21 @@
-﻿using System;
+﻿/*
+Copyright 2015 Stepan Fryd (stepan.fryd@gmail.com)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -11,11 +28,26 @@ namespace NParametrizer
 	/// </summary>
 	public abstract class ParametersBase
 	{
+		#region Fields and constants
+
 		private readonly List<string> _arguments = new List<string>();
 		private readonly IDictionary<string, ParameterAttribute> _parameters;
 
+		#endregion
+
+		#region Public members
+
 		/// <summary>
-		/// Base class constructor
+		///   Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
+		/// </summary>
+		protected string ValueArgumentPrefix { get; }
+
+		#endregion
+
+		#region Constructors
+
+		/// <summary>
+		///   Base class constructor
 		/// </summary>
 		protected ParametersBase() : this(null, null)
 		{
@@ -44,13 +76,12 @@ namespace NParametrizer
 			ValidateArguments();
 		}
 
-		/// <summary>
-		///   Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
-		/// </summary>
-		protected string ValueArgumentPrefix { get; private set; }
+		#endregion
+
+		#region Private and protected
 
 		/// <summary>
-		/// Get configuration section by name with specified type
+		///   Get configuration section by name with specified type
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="sectionName"></param>
@@ -61,24 +92,24 @@ namespace NParametrizer
 		}
 
 		/// <summary>
-		/// Get configuration section by name with specified type
+		///   Get configuration section by name with specified type
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="sectionName"></param>
 		/// <returns></returns>
 		protected T GetSection<T>(string sectionName)
 		{
-			return (T)ConfigurationManager.GetSection(sectionName);
+			return (T) ConfigurationManager.GetSection(sectionName);
 		}
-		
+
 		/// <summary>
-		/// Get section by generic type
+		///   Get section by generic type
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		protected T GetSection<T>()
 		{
-			return (T)ConfigurationManager.GetSection(typeof(T).Name);
+			return (T) ConfigurationManager.GetSection(typeof (T).Name);
 		}
 
 		private void SetDefaults()
@@ -86,9 +117,9 @@ namespace NParametrizer
 			// set defaults from attributes
 			foreach (var prop in GetType()
 				.GetProperties()
-				.Where(p => Attribute.IsDefined(p, typeof(DefaultValueAttribute))))
+				.Where(p => Attribute.IsDefined(p, typeof (DefaultValueAttribute))))
 			{
-				var parAttr = prop.GetCustomAttributes(typeof(DefaultValueAttribute), true) as DefaultValueAttribute[];
+				var parAttr = prop.GetCustomAttributes(typeof (DefaultValueAttribute), true) as DefaultValueAttribute[];
 				if (parAttr != null && parAttr.Length > 0)
 				{
 					if (parAttr[0].Value != null)
@@ -101,9 +132,9 @@ namespace NParametrizer
 			// overwrite by app.config
 			foreach (var prop in GetType()
 				.GetProperties()
-				.Where(p => Attribute.IsDefined(p, typeof(ConfigAttribute))))
+				.Where(p => Attribute.IsDefined(p, typeof (ConfigAttribute))))
 			{
-				var parAttrs = prop.GetCustomAttributes(typeof(ConfigAttribute), true) as ConfigAttribute[];
+				var parAttrs = prop.GetCustomAttributes(typeof (ConfigAttribute), true) as ConfigAttribute[];
 				if (parAttrs != null && parAttrs.Length > 0)
 				{
 					var parAttr = parAttrs[0];
@@ -149,9 +180,9 @@ namespace NParametrizer
 		{
 			foreach (var prop in GetType()
 				.GetProperties()
-				.Where(p => Attribute.IsDefined(p, typeof(ParameterAttribute))))
+				.Where(p => Attribute.IsDefined(p, typeof (ParameterAttribute))))
 			{
-				var attrs = prop.GetCustomAttributes(typeof(ParameterAttribute), true) as ParameterAttribute[];
+				var attrs = prop.GetCustomAttributes(typeof (ParameterAttribute), true) as ParameterAttribute[];
 				if (attrs != null && attrs.Length > 0)
 				{
 					var parAttr = attrs.First();
@@ -222,7 +253,7 @@ namespace NParametrizer
 						{
 							// expecting, that non-dash value are boolean and if is set, than set to true.
 							_parameters[argument].BelongsTo.SetValue(this,
-								!((bool)_parameters[argument].BelongsTo.GetValue(this, null)), null);
+								!((bool) _parameters[argument].BelongsTo.GetValue(this, null)), null);
 						}
 						catch
 						{
@@ -231,5 +262,7 @@ namespace NParametrizer
 				}
 			}
 		}
+
+		#endregion
 	}
 }
