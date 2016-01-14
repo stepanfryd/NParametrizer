@@ -2,6 +2,7 @@ language: csharp
 solution: src/NParametrizer.sln
 install:
   - nuget restore src/NParametrizer.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Debug src/NParametrizer.sln
-  - mono ./NParametrizer/src/packages/NUnit.Console.3.0.1/tools/nunit3-console.exe ./NParametrizer/src/NParametrizer.Tests/bin/Debug/NParametrizer.Tests.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./NParametrizer/src/NParametrizer.Tests/bin/Debug/NParametrizer.Tests.dll
