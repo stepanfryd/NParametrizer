@@ -4,3 +4,4 @@ install:
   - nuget restore src/NParametrizer.sln
 script:
   - xbuild /p:Configuration=Debug src/NParametrizer.sln
+	- mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./NParametrizer/src/NParametrizer.Tests/bin/Debug/NParametrizer.Tests.dll
