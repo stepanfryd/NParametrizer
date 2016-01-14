@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 
 namespace NParametrizer
 {
@@ -28,19 +29,19 @@ namespace NParametrizer
 	/// </summary>
 	public abstract class ParametersBase
 	{
-		#region Fields and constants
-
-		private readonly List<string> _arguments = new List<string>();
-		private readonly IDictionary<string, ParameterAttribute> _parameters;
-
-		#endregion
-
 		#region Public members
 
 		/// <summary>
 		///   Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
 		/// </summary>
 		protected string ValueArgumentPrefix { get; }
+
+		#endregion
+
+		#region Fields and constants
+
+		private readonly List<string> _arguments = new List<string>();
+		private readonly IDictionary<string, ParameterAttribute> _parameters;
 
 		#endregion
 
@@ -73,6 +74,7 @@ namespace NParametrizer
 			SetDefaults();
 			ProcessParameters();
 			ProcessArguments();
+			// ReSharper disable once VirtualMemberCallInContructor
 			ValidateArguments();
 		}
 
@@ -83,7 +85,6 @@ namespace NParametrizer
 		/// <summary>
 		///   Get configuration section by name with specified type
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
 		/// <param name="sectionName"></param>
 		/// <returns></returns>
 		protected object GetSection(string sectionName)
@@ -141,7 +142,7 @@ namespace NParametrizer
 					if (!string.IsNullOrEmpty(parAttr.KeyName))
 					{
 						if (parAttr.Type == ConfigType.AppSettings &&
-								ConfigurationManager.AppSettings[parAttr.KeyName] != null)
+						    ConfigurationManager.AppSettings[parAttr.KeyName] != null)
 						{
 							var strVal = ConfigurationManager.AppSettings[parAttr.KeyName];
 
@@ -152,12 +153,11 @@ namespace NParametrizer
 							catch (Exception ex)
 							{
 								throw new ApplicationException(
-									string.Format("Config parameter [{0}] input is not in expected format",
-										parAttr.KeyName), ex);
+									$"Config parameter [{parAttr.KeyName}] input is not in expected format", ex);
 							}
 						}
 						else if (parAttr.Type == ConfigType.ConnectionString &&
-										 ConfigurationManager.ConnectionStrings[parAttr.KeyName] != null)
+						         ConfigurationManager.ConnectionStrings[parAttr.KeyName] != null)
 						{
 							prop.SetValue(this, ConfigurationManager.ConnectionStrings[parAttr.KeyName].ConnectionString,
 								null);
@@ -167,6 +167,55 @@ namespace NParametrizer
 							prop.SetValue(this, GetSection(parAttr.KeyName), null);
 						}
 					}
+				}
+			}
+
+			// overwrite by Environment variables
+			foreach (var prop in GetType()
+				.GetProperties()
+				.Where(p => Attribute.IsDefined(p, typeof (EnvironmentAttribute))))
+			{
+				var parAttrs = prop.GetCustomAttributes(typeof (EnvironmentAttribute), true) as EnvironmentAttribute[];
+				if (parAttrs != null && parAttrs.Length > 0)
+				{
+					var parAttr = parAttrs[0];
+					if (!string.IsNullOrEmpty(parAttr.KeyName))
+					{
+						if (parAttr.Type != null)
+						{
+							SetPropertyValue(Environment.GetEnvironmentVariable(parAttr.KeyName, parAttr.Type.Value), prop);
+						}
+						else
+						{
+							var flow = new[]
+							{EnvironmentVariableTarget.Process, EnvironmentVariableTarget.User, EnvironmentVariableTarget.Machine};
+
+							foreach (var evt in flow)
+							{
+								var value = Environment.GetEnvironmentVariable(parAttr.KeyName, evt);
+								if (!string.IsNullOrEmpty(value))
+								{
+									SetPropertyValue(value, prop);
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		private void SetPropertyValue(string value, PropertyInfo prop)
+		{
+			if (!string.IsNullOrEmpty(value))
+			{
+				try
+				{
+					prop.SetValue(this, Convert.ChangeType(value, prop.PropertyType), null);
+				}
+					// ReSharper disable once EmptyGeneralCatchClause
+				catch
+				{
 				}
 			}
 		}
@@ -239,6 +288,7 @@ namespace NParametrizer
 						}
 						catch
 						{
+							// ignored
 						}
 					}
 				}
@@ -253,8 +303,9 @@ namespace NParametrizer
 						{
 							// expecting, that non-dash value are boolean and if is set, than set to true.
 							_parameters[argument].BelongsTo.SetValue(this,
-								!((bool) _parameters[argument].BelongsTo.GetValue(this, null)), null);
+								!(bool) _parameters[argument].BelongsTo.GetValue(this, null), null);
 						}
+							// ReSharper disable once EmptyGeneralCatchClause
 						catch
 						{
 						}

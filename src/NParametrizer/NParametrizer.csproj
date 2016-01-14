@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnvironmentAttribute.cs" />
     <Compile Include="ConfigAttribute.cs" />
     <Compile Include="ConfigType.cs" />
     <Compile Include="PametersBase.cs" />

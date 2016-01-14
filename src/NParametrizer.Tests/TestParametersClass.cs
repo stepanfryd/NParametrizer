@@ -137,6 +137,21 @@ namespace NParametrizer.Tests
 		[Parameter("--ENM", Description = "Test enum value")]
 		public TestEnum EnumValue { get; set; }
 
+		[Environment("TEST_PARAM_UNSPECIFIED")]
+		public int TestParamUnspecified { get; set; }
+
+		[Environment("TEST_PARAM_USER", EnvironmentVariableTarget.User)]
+		public string TestParamUser { get; set; }
+
+		[Environment("TEST_PARAM_MACHINE", EnvironmentVariableTarget.Machine)]
+		public string TestParamMachine { get; set; }
+
+		[Environment("TEST_PARAM_UNSPECIFIED", EnvironmentVariableTarget.User)]
+		public int TestParamUnspecifiedUser { get; set; }
+
+		[Environment("TEST_PARAM_UNSPECIFIED", EnvironmentVariableTarget.Machine)]
+		public int TestParamUnspecifiedMachine { get; set; }
+
 		public CustomConfigSection CustomConfig
 		{
 			get

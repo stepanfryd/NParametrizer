@@ -4,6 +4,34 @@
         <name>NParametrizer</name>
     </assembly>
     <members>
+        <member name="T:NParametrizer.EnvironmentAttribute">
+            <summary>
+                Environment value paremeter
+            </summary>
+        </member>
+        <member name="P:NParametrizer.EnvironmentAttribute.Type">
+            <summary>
+                EnvironmentVariableTarget process/user/machine, If null parameter value then search of value goes Process => User => Machine
+            </summary>
+        </member>
+        <member name="P:NParametrizer.EnvironmentAttribute.KeyName">
+            <summary>
+                Key name in configuration dictioary
+            </summary>
+        </member>
+        <member name="M:NParametrizer.EnvironmentAttribute.#ctor(System.String,System.EnvironmentVariableTarget)">
+            <summary>
+                Default constructor of configuration parameter
+            </summary>
+            <param name="key">Key name in configuration dictioary</param>
+            <param name="type">EnvironmentVariableTarget process/user/machine</param>
+        </member>
+        <member name="M:NParametrizer.EnvironmentAttribute.#ctor(System.String)">
+            <summary>
+                Default constructor of configuration parameter
+            </summary>
+            <param name="key">Key name in configuration dictioary</param>
+        </member>
         <member name="T:NParametrizer.ConfigAttribute">
             <summary>
                 Configuration paremeter
@@ -33,22 +61,22 @@
         </member>
         <member name="T:NParametrizer.ConfigType">
             <summary>
-            Configuration parameter location
+              Configuration parameter location
             </summary>
         </member>
         <member name="F:NParametrizer.ConfigType.AppSettings">
             <summary>
-            AppSettings collection key
+              AppSettings collection key
             </summary>
         </member>
         <member name="F:NParametrizer.ConfigType.ConnectionString">
             <summary>
-            Connection strings collection key
+              Connection strings collection key
             </summary>
         </member>
         <member name="F:NParametrizer.ConfigType.CustomSection">
             <summary>
-            Configuration is defined in custom configuration section
+              Configuration is defined in custom configuration section
             </summary>
         </member>
         <member name="T:NParametrizer.ParametersBase">
@@ -56,9 +84,14 @@
               Base abstract clase for parameter store
             </summary>
         </member>
+        <member name="P:NParametrizer.ParametersBase.ValueArgumentPrefix">
+            <summary>
+              Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
+            </summary>
+        </member>
         <member name="M:NParametrizer.ParametersBase.#ctor">
             <summary>
-            Base class constructor
+              Base class constructor
             </summary>
         </member>
         <member name="M:NParametrizer.ParametersBase.#ctor(System.String[],System.String)">
@@ -71,22 +104,16 @@
               --PARAMETER=
             </param>
         </member>
-        <member name="P:NParametrizer.ParametersBase.ValueArgumentPrefix">
-            <summary>
-              Defined argument prefix. Default value is -- which means, that value parameters looks like --PARAMETER=
-            </summary>
-        </member>
         <member name="M:NParametrizer.ParametersBase.GetSection(System.String)">
             <summary>
-            Get configuration section by name with specified type
+              Get configuration section by name with specified type
             </summary>
-            <typeparam name="T"></typeparam>
             <param name="sectionName"></param>
             <returns></returns>
         </member>
         <member name="M:NParametrizer.ParametersBase.GetSection``1(System.String)">
             <summary>
-            Get configuration section by name with specified type
+              Get configuration section by name with specified type
             </summary>
             <typeparam name="T"></typeparam>
             <param name="sectionName"></param>
@@ -94,7 +121,7 @@
         </member>
         <member name="M:NParametrizer.ParametersBase.GetSection``1">
             <summary>
-            Get section by generic type
+              Get section by generic type
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
@@ -106,40 +133,39 @@
         </member>
         <member name="T:NParametrizer.ParameterAttribute">
             <summary>
-                Class for paramter definition
+              Class for paramter definition
             </summary>
-        </member>
-        <member name="M:NParametrizer.ParameterAttribute.#ctor(System.String[])">
-            <summary>
-                Default Parameter constructor
-            </summary>
-            <param name="pars">Array of all possible arguments belongs to property</param>
         </member>
         <member name="P:NParametrizer.ParameterAttribute.ParameterVariants">
             <summary>
-                Array of all possible arguments belongs to property
+              Array of all possible arguments belongs to property
             </summary>
         </member>
         <member name="P:NParametrizer.ParameterAttribute.Description">
             <summary>
-                Parameter description. Can be used for usage generation eg. in case if no command argument is specified but program
-                needs some or required or in help/? command. :)
+              Parameter description. Can be used for usage generation eg. in case if no command argument is specified but program
+              needs some or required or in help/? command. :)
             </summary>
         </member>
         <member name="P:NParametrizer.ParameterAttribute.BelongsTo">
             <summary>
-                Property to parameter belongs
+              Property to parameter belongs
             </summary>
+        </member>
+        <member name="M:NParametrizer.ParameterAttribute.#ctor(System.String[])">
+            <summary>
+              Default Parameter constructor
+            </summary>
+            <param name="pars">Array of all possible arguments belongs to property</param>
         </member>
         <member name="T:NParametrizer.ParametrizerSectionHandler`1">
             <summary>
-            Handles generic configuration section using XML serialization
+              Handles generic configuration section using XML serialization
             </summary>
             <typeparam name="T">The type of the section</typeparam>
         </member>
         <member name="M:NParametrizer.ParametrizerSectionHandler`1.Create(System.Object,System.Object,System.Xml.XmlNode)">
             <summary>
-            
             </summary>
             <param name="parent"></param>
             <param name="configContext"></param>

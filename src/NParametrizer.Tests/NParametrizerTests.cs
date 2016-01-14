@@ -305,5 +305,15 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.Import3);
 			Assert.IsTrue(!par.PerformFtpDownload);
 		}
+
+		[Test]
+		public void EnvironmentVarsTest()
+		{
+			var par = new TestParametersClass();
+			Assert.IsTrue(par.TestParamUnspecified == 100000);
+			Assert.IsFalse(par.TestParamUnspecified== 200000);
+			Assert.IsTrue(par.TestParamUser=="USER_ONLY_VALUE");
+			Assert.IsTrue(par.TestParamMachine=="MACHINE_ONLY_VALUE");
+		}
 	}
 }
