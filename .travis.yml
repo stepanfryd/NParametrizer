@@ -5,4 +5,5 @@ install:
   - nuget install NUnit.Runners -Version 3.0.1 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Debug src/NParametrizer.sln
+  - echo $NUGET_API_KEY
 #  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./NParametrizer/src/NParametrizer.Tests/bin/Debug/NParametrizer.Tests.dll
