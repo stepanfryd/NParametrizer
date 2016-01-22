@@ -2,6 +2,9 @@
 
 namespace NParametrizer.Tests
 {
+	/// <summary>
+	/// Custom configuration section
+	/// </summary>
 	[XmlRoot("testSection")]
 	public class CustomConfigSection
 	{
