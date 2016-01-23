@@ -1,9 +1,11 @@
 language: csharp
 solution: src/NParametrizer.sln
 install:
-  - nuget restore src/NParametrizer.sln
-  - nuget install NUnit.Runners -Version 3.0.1 -OutputDirectory testrunner
+- nuget restore src/NParametrizer.sln
+- nuget install NUnit.Runners -Version 3.0.1 -OutputDirectory testrunner
 script:
-  - xbuild /p:Configuration=Debug src/NParametrizer.sln
-  - echo $NUGET_API_KEY
-#  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./NParametrizer/src/NParametrizer.Tests/bin/Debug/NParametrizer.Tests.dll
+- xbuild /p:Configuration=Debug src/NParametrizer.sln
+- echo $NUGET_API_KEY
+notifications:
+  slack:
+    secure: dsnx1/IVUvhRvl1v2D2qCkh5xpg51dBjBOY2FHAXaqfvRwCv4ZlIx9CFC2iP3vKLWjRX1n8YzVfra01vZ8N91jiocMn0X8nTvl36CnkeK8xUlKGMBViCP33zNkxd7ORWTPSXRFMIYA8VWw2lcC763OzCizu4IF555xGFrAdUBvPGGe5hNb9MXF4Ureg/6J0m1uqBu3Bd/VAMauyomSYd+bXG31OF5ga3IaMq4Uju4Nm6rl97+Wc20fXnF5eZYpP/m3OWZSpiuskIWbvIZ89ZbBAtWbpWJc2abWvfXwsrr6jsr7lFLA/mOjzZsNrosJZzJoaRNC46YOCjScpgBaV5Dw02rAJ3lrRLZERk4FcVa6OJMZTPWQMqldip0Nfh4NK8a4YcJfdEGOCBEYM7v6md+7Mzmcgu8NejTyEsPlQOC6ZuWTAoSo5Uep9q4Hr6kf/K8WMhcH+/rnokHqPUHoiMWVbJ+6ApAd+2fWWLObWIYYyFt99PHYl0gWuoq/eTIEmgcaJxvlJKKFBM2ZUVdA3d2GGBsBsXKPDT/m/QxbpykvM51jrLr22Y/X/Vy5Zfz+szEE/tJoIwmGu1ydKJiJAbeDs3LWBjDgeFMWlPYmPz3kI6r8muHVXrDpM3mX2DlM36mFXNzHMWMw1RbOLXaSGOTOhY8ZBR3pc6jaUMKRjQolg=
