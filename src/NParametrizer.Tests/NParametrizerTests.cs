@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace NParametrizer.Tests
 {
-	[TestFixture]
+	[TestClass]
 	public class NParametrizerTests
 	{
 		private const string SUPER_FILE_TO_IMPORT = "TEST_SUPERFILE_FILE_NAME";
@@ -19,7 +19,7 @@ namespace NParametrizer.Tests
 		private string FtpUriFull
 			=> $"{FTP_URI_SCHEME}://{FTP_URI_USER}:{FTP_URI_PASSWORD}@{FTP_URI_HOST}:{FTP_URI_PORT}{FTP_URI_PATH}";
 
-		[Test]
+		[TestMethod]
 		public void AllFilesTest()
 		{
 			var par = new TestParametersClass(new[] {"all", "download"});
@@ -30,7 +30,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.PerformFtpDownload);
 		}
 
-		[Test]
+		[TestMethod]
 		public void AllTest()
 		{
 			var par = new TestParametersClass(new[] {"all"});
@@ -41,7 +41,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(!par.PerformFtpDownload);
 		}
 
-		[Test]
+		[TestMethod]
 		public void AppSettingsTest()
 		{
 			var par = new TestParametersClass(new string[] {});
@@ -61,7 +61,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.MongoServerString == MONGO_SERVER_CONNECTION_STRING);
 		}
 
-		[Test]
+		[TestMethod]
 		public void ChangeFtpUriTest()
 		{
 			var par =
@@ -85,7 +85,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.MongoServerString == MONGO_SERVER_CONNECTION_STRING);
 		}
 
-		[Test]
+		[TestMethod]
 		public void ConnectionStringsTest()
 		{
 			var newSql = "NEW_SQL_CONNECTION_STRING";
@@ -110,7 +110,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.DownloadPath == DOWNLOAD_PATH);
 		}
 
-		[Test]
+		[TestMethod]
 		public void CustomSectionTest()
 		{
 			var config = new TestParametersClass();
@@ -121,7 +121,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(config.CustomConfigGroup.Number == 200);
 		}
 
-		[Test]
+		[TestMethod]
 		public void DisableDownloadTest()
 		{
 			var par = new TestParametersClass(new[] {"download"});
@@ -143,7 +143,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.MongoServerString == MONGO_SERVER_CONNECTION_STRING);
 		}
 
-		[Test]
+		[TestMethod]
 		public void EnumTest()
 		{
 			var par = new TestParametersClass(new[] {"--ENM=Value1"});
@@ -159,7 +159,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par3.EnumNullableValue.Equals(TestEnum.Value3));
 		}
 
-		[Test]
+		[TestMethod]
 		public void EnvironmentVarsTest()
 		{
 
@@ -170,7 +170,7 @@ namespace NParametrizer.Tests
 			//Assert.IsTrue(par.TestParamMachine == "MACHINE_ONLY_VALUE");
 		}
 
-		[Test]
+		[TestMethod]
 		public void FilesLongChangePrefixTests()
 		{
 			var newDownloadPath = "NEW_DOWNLOAD_PATH";
@@ -202,7 +202,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.MongoServerString == MONGO_SERVER_CONNECTION_STRING);
 		}
 
-		[Test]
+		[TestMethod]
 		public void FilesLongTests()
 		{
 			var newDownloadPath = "NEW_DOWNLOAD_PATH";
@@ -234,7 +234,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.MongoServerString == MONGO_SERVER_CONNECTION_STRING);
 		}
 
-		[Test]
+		[TestMethod]
 		public void FilesShortTests()
 		{
 			var newDownloadPath = "NEW_DOWNLOAD_PATH";
@@ -266,14 +266,14 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(par.MongoServerString == MONGO_SERVER_CONNECTION_STRING);
 		}
 
-		[Test]
+		[TestMethod]
 		public void ParameterLessConstructorTest()
 		{
 			var par = new TestParametersClass();
 			Assert.IsTrue(par.MongoServerString == "TEST_MONGO_CONNECTION_STRING_APP.CONFIG");
 		}
 
-		[Test]
+		[TestMethod]
 		public void RadioShackTest()
 		{
 			var par = new TestParametersClass(new[] {"import2"});
@@ -284,7 +284,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(!par.PerformFtpDownload);
 		}
 
-		[Test]
+		[TestMethod]
 		public void SsisTest()
 		{
 			var par = new TestParametersClass(new[] {"import1"});
@@ -295,7 +295,7 @@ namespace NParametrizer.Tests
 			Assert.IsTrue(!par.PerformFtpDownload);
 		}
 
-		[Test]
+		[TestMethod]
 		public void SweepTest()
 		{
 			var par = new TestParametersClass(new[] {"import3"});
